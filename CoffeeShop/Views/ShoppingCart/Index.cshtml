@@ -1,0 +1,98 @@
+﻿@model IEnumerable<coffeeshop.Models.ShoppingCartItem>
+
+<section class="h-100 h-custom" style="background-color: #fafafa;">
+    <div class="container py-5 h-100">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="col-12">
+                <div class="card card-registration card-registration-2" style="border-radius: 15px;">
+                    <div class="card-body p-0">
+                        <div class="row g-0">
+                            <div class="col-lg-7">
+                                <div class="p-5">
+                                    <div class="d-flex justify-content-between align-items-center mb-5">
+                                        <h2 class="fw-bold mb-0 text-black">Giỏ hàng</h2>
+                                        @* Hiển thị số lượng sản phẩm trong giỏ hàng *@
+                                        <h6 class="mb-0 text-muted">@Model.Count() sản phẩm</h6>
+                                    </div>
+                                    <hr class="my-4">
+
+                                    @* Bắt đầu kiểm tra nếu Model (giỏ hàng) có bất kỳ mục nào *@
+                                    @if (Model.Any())
+                                    {
+                                        @* Nếu có sản phẩm, hiển thị danh sách các sản phẩm *@
+                                        @foreach (var item in Model)
+                                        {
+                                            <div class="row mb-4 d-flex justify-content-between align-items-center">
+                                                <div class="col-md-2 col-lg-2 col-xl-2">
+                                                    <img src="@item.Product.ImageUrl"
+                                                         class="img-fluid rounded-3" alt="@item.Product.Name">
+                                                </div>
+                                                <div class="col-md-3 col-lg-3 col-xl-3">
+                                                    <h6 class="text-black mb-0">@item.Qty x @item.Product.Name</h6>
+                                                </div>
+                                                <div class="col-md-3 col-lg-2 col-xl-2 offset-lg-1">
+                                                    <h6 class="mb-0">@((item.Qty * item.Product.Price).ToString("C"))</h6>
+                                                </div>
+                                                <div class="col-md-1 col-lg-1 col-xl-1 text-end">
+                                                    @* Liên kết xóa sản phẩm khỏi giỏ hàng *@
+                                                    <a asp-controller="ShoppingCart" asp-action="RemoveFromShoppingCart" asp-route-pId="@item.Product.Id" class="text-decoration-none">
+                                                        <h3>&#128465;</h3> @* Hoặc <i class="fas fa-trash"></i> nếu dùng Font Awesome *@
+                                                    </a>
+                                                </div>
+                                            </div>
+                                            <hr class="my-4">
+                                        }
+                                    }
+                                    else
+                                    {
+                                        @* Nếu giỏ hàng trống, hiển thị thông báo và nút "Bắt đầu mua sắm" *@
+                                        <div class="text-center">
+                                            @* [Image of Empty Cart] *@
+                                            <img src="https://www.smsgup.com/shop/T156/empty-cart.svg" class="img-fluid" style="width: 250px; height: 250px; margin-left: auto; margin-right: auto;" alt="Giỏ hàng trống">
+                                            <h1 class="fw-bold mb-3 text-black">Giỏ hàng của bạn trống!</h1>
+                                            <p class="text-muted">Trước khi tiến hành thanh toán, bạn cần thêm một vài sản phẩm vào giỏ hàng. Bạn có thể tìm thấy rất nhiều sản phẩm thú vị trên trang "Shop" của chúng tôi.</p>
+                                            @* Nút để quay lại trang sản phẩm *@
+                                            <a asp-controller="Products" asp-action="Shop" class="btn btn-primary w-25 mt-3">Bắt đầu mua sắm</a>
+                                        </div>
+                                    }
+
+
+                                    <div class="pt-5">
+                                        <h6 class="mb-0">
+                                            @* Liên kết quay lại trang cửa hàng *@
+                                            <a asp-controller="Products" asp-action="Shop" class="text-body">
+                                                <i class="fas fa-long-arrow-alt-left me-2"></i>Quay lại cửa hàng
+                                            </a>
+                                        </h6>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-5 bg-grey">
+                                <div class="p-5">
+                                    <h4 class="fw-bold mb-5 mt-2 pt-1">Tóm tắt</h4>
+                                    <hr class="my-4">
+
+                                    <div class="d-flex justify-content-between mb-5">
+                                        <h5 class="text-uppercase">Tổng giá tiền</h5>
+                                        @* Hiển thị tổng giá tiền từ ViewBag *@
+                                        <h5>@ViewBag.TotalCart.ToString("C")</h5>
+                                    </div>
+
+                                    @* Nút tiến hành thanh toán (chưa có chức năng ở đây) *@
+                                    <button type="button" class="btn btn-primary btn-block btn-lg"
+                                            data-mdb-ripple-color="dark">
+                                        Tiến hành
+                                    </button>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Link to Font Awesome for icons (ví dụ: biểu tượng thùng rác, mũi tên) -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
